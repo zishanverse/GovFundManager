@@ -104,28 +104,17 @@ const Home = ({ wallet }) => {
   visible={true}
   /> : <><img src="https://www.icicidirect.com/images//Fund%20manager-202210281647246454795.png" alt="gov" className="gov-logo" />
   <h1>Gov Fund Manager</h1>
-  <Link to="/create-allocation" ><button onClick={openModal}>Add Allocation</button></Link>
+  <Link to="/create-allocation" ><button >Add Allocation</button></Link>
   <h1 className="head">List of Allocations</h1>
   <ul className="pre-allocations">
     {list.map(each => <Allocation key={each.key} item={each}/>)}
   </ul>
-  <Modal
-    isOpen={modalIsOpen}
-    onRequestClose={closeModal}
-    style={customStyles}
-    contentLabel="Example Modal"
-  >
-    <div className="form-container">
-    <h2 className="form-name">Allocation</h2>
-    <button className="modal-close" onClick={closeModal}>close</button>
-    </div>
-  </Modal>
   </>}
           
           </div>
       </>
       );
-  
+
 
  
 };
