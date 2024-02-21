@@ -1,22 +1,13 @@
 import { useState, useEffect } from "react";
 import logic from "../interface/logic";
-import { toastInfo, toastSuccess, toastError } from "../utils/toastWrapper";
+import {toastError } from "../utils/toastWrapper";
 import { Toaster } from "react-hot-toast";
 import {Circles} from 'react-loader-spinner';
 import {Navigate, Link} from 'react-router-dom';
 import "./home.css";
 import Allocation from "./Allocation";
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
+
 
 const Home = ({ wallet }) => {
   const [updateFund, setUpdateFund] = useState("");
