@@ -3,7 +3,6 @@ import logic from "../interface/logic";
 import { toastInfo, toastSuccess, toastError } from "../utils/toastWrapper";
 import { Toaster } from "react-hot-toast";
 import {Circles} from 'react-loader-spinner';
-import Modal from 'react-modal';
 import {Navigate, Link} from 'react-router-dom';
 import "./home.css";
 import Allocation from "./Allocation";
@@ -20,7 +19,6 @@ const customStyles = {
 };
 
 const Home = ({ wallet }) => {
-  const [amountSpent, setAmountSpent] = useState("");
   const [updateFund, setUpdateFund] = useState("");
   const [list, setList] = useState([]);
   const [fundId, setFundId] = useState("");
@@ -28,28 +26,8 @@ const Home = ({ wallet }) => {
   const [loading, setLoading] = useState(true);
   const [modalIsOpen, setIsOpen] = useState(false);
   
-  
 
   
-
-  
-  const changeAmountSpent = (e) => setAmountSpent(parseInt(e.target.value));
-
-  
-
-  const changeFund = async () => {
-    const { lists } = await logic.GetAllocations();
-    console.log(lists);
-    setAmountSpent((pre) => pre + updateFund);
-
-    const found = lists.find((each) => each.id === fundId);
-    if (found === undefined) {
-      setError(true);
-    } else {
-      setError(false);
-      await logic.UpdateAmountSpent(wallet, fundId, updateFund);
-    }
-  };
 
   useEffect(() => {
     getData();
@@ -78,12 +56,6 @@ const Home = ({ wallet }) => {
 
   
 
-  function openModal() {
-    setIsOpen(true);
-  }
-  function closeModal() {
-    setIsOpen(false);
-  }
   
 
   
@@ -107,7 +79,7 @@ const Home = ({ wallet }) => {
   <Link to="/create-allocation" ><button >Add Allocation</button></Link>
   <h1 className="head">List of Allocations</h1>
   <ul className="pre-allocations">
-    {list.map(each => <Allocation key={each.key} item={each}/>)}
+    {list.map(each => <Allocation key={each.key} wallet={wallet} item={each}/>)}
   </ul>
   </>}
           

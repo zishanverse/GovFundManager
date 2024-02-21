@@ -1,4 +1,7 @@
 
+import logic from "../interface/logic";
+import {toastError } from "../utils/toastWrapper";
+import { Toaster } from "react-hot-toast";
 import {useState} from 'react';
 import Modal from 'react-modal';
 // This page opens to view individual allocation
@@ -21,15 +24,52 @@ const customStyles = {
 
 const Allocation = props => {
   const [modalIsOpen, setIsOpen] = useState(false);
-    const {item} = props
-    const {amountAllocated, amountSpent, purpose, comments, key} = item
+  const [modalIsOpen2, setIsOpen2] = useState(false);
+  const [amountSpen, setAmountSpent] = useState("");
+  const [comment, setComment] = useState("");
+  const {item, wallet} = props
+  const {amountAllocated, amountSpent, purpose, comments, key} = item
 
+ 
+
+    const changeFund = async () => {
+        try {
+            const response = await logic.UpdateAmountSpent(wallet, key , amountSpen);
+            setIsOpen(false);
+            setAmountSpent(0);
+          }
+          catch (error) {
+            closeModal();
+            setAmountSpent(0);
+            toastError(error.message);
+          }
+      };
+
+      const AddComment = async () => {
+        try {
+            const response = await logic.AddComment(wallet, key , comment);
+            setIsOpen2(false);
+            setAmountSpent(0);
+          }
+          catch (error) {
+            setIsOpen2(false);
+            toastError(error.message);
+          }
+      }
     
   function openModal() {
     setIsOpen(true);
   }
+  function openModal2() {
+    setIsOpen2(true);
+  }
+
   function closeModal() {
     setIsOpen(false);
+  }
+
+  function closeModal2() {
+    setIsOpen2(false);
   }
     return (
         <li className="allocation-item">
@@ -37,11 +77,30 @@ const Allocation = props => {
             <p>Amount Allocated: {amountAllocated}</p>
             <p>Amount Spent: {amountSpent}</p>
             <p>Purpose: {purpose}</p>
+            
+            <div className="btns">
+            <button onClick={openModal}>Update</button>
+            <button onClick={openModal2}>comments</button>
+            </div>
+            <Modal
+            isOpen={modalIsOpen2}
+            onRequestClose={closeModal2}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+            <div className="form-container">
+            <h2 className="form-name">previous Comments</h2>
             <ol>
                 {comments.map(each => <li>{each}</li>)}
             </ol>
-            <button onClick={openModal}>Update</button>
-            <Modal
+            <label>Enter your comment</label>
+            <textarea onChange={(e) => setComment(e.target.value)} placeholder="Enter your Comment  " value={comment}/>
+            
+            <button onClick={AddComment}>Done</button>
+            </div>
+          </Modal>
+
+          <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             style={customStyles}
@@ -49,7 +108,10 @@ const Allocation = props => {
           >
             <div className="form-container">
             <h2 className="form-name">Allocation</h2>
-            <button className="modal-close" onClick={closeModal}>close</button>
+            <label>Enter Allocation Spend Amount</label>
+            <input type="text" onChange={(e) => setAmountSpent(parseInt(e.target.value))} placeholder="Enter Allocation Spend Amount" value={String(amountSpen)}/>
+            
+            <button onClick={changeFund}>Done</button>
             </div>
           </Modal>
         </li>

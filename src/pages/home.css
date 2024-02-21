@@ -82,6 +82,10 @@
     }
   }
 
+  .btns {
+    display: flex;
+    justify-content: space-between
+  }
   .btn-card {
     display: flex;
     height: 30vh;
