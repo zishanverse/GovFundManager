@@ -1,7 +1,19 @@
 .login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqFUoOzaBd_QpPk6HpTIOZZYXdqVUQJur72g&usqp=CAU');
+    background-size: cover;
+    height: 70vh;
 }
 
 .login-img {
-    width: 30vw;
+    width: 20vw;
     
+}
+
+.nav {
+    margin-bottom: 0px;
+    background-color: transparent;
 }

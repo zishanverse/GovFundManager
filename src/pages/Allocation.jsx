@@ -4,6 +4,7 @@ import {toastError } from "../utils/toastWrapper";
 import { Toaster } from "react-hot-toast";
 import {useState} from 'react';
 import Modal from 'react-modal';
+import './styles/allocation.css';
 // This page opens to view individual allocation
 
 // People can view amount-spent and purpose
@@ -12,6 +13,7 @@ import Modal from 'react-modal';
 // amount spent from this page
 const customStyles = {
     content: {
+      padding: '10px',
       top: '50%',
       left: '50%',
       right: 'auto',
@@ -29,6 +31,7 @@ const Allocation = props => {
   const [comment, setComment] = useState("");
   const {item, wallet} = props
   const {amountAllocated, amountSpent, purpose, comments, key} = item
+  console.log(comments)
 
  
 
@@ -49,13 +52,23 @@ const Allocation = props => {
         try {
             const response = await logic.AddComment(wallet, key , comment);
             setIsOpen2(false);
-            setAmountSpent(0);
+            setComment("");
           }
           catch (error) {
             setIsOpen2(false);
+            setComment("");
             toastError(error.message);
           }
       }
+    
+  const changeAmountSpend = event => {
+    if (Number.isNaN(parseInt(event.target.value))) {
+      setAmountSpent("");
+    }
+    else {
+      setAmountSpent(parseInt(event.target.value))
+    }
+  }
     
   function openModal() {
     setIsOpen(true);
@@ -79,8 +92,8 @@ const Allocation = props => {
             <p>Purpose: {purpose}</p>
             
             <div className="btns">
-            <button onClick={openModal}>Update</button>
-            <button onClick={openModal2}>comments</button>
+            <button onClick={openModal} className="form-btn">Update</button>
+            <button onClick={openModal2} className="form-btn">comments</button>
             </div>
             <Modal
             isOpen={modalIsOpen2}
@@ -88,14 +101,15 @@ const Allocation = props => {
             style={customStyles}
             contentLabel="Example Modal"
           >
-            <div className="form-container">
+            <div className="modal-container">
             <h2 className="form-name">previous Comments</h2>
             <ol>
-                {comments.map(each => <li>{each}</li>)}
+                {comments.map(each => <li className="comment">{each.comment}</li>)}
             </ol>
-            <label>Enter your comment</label>
-            <textarea onChange={(e) => setComment(e.target.value)} placeholder="Enter your Comment  " value={comment}/>
-            
+            <div>
+              <label className="modal-label">Enter your comment</label>
+              <textarea  rows="15" cols="25" onChange={(e) => setComment(e.target.value)} placeholder="Enter your Comment  " value={comment}/>
+            </div>
             <button onClick={AddComment}>Done</button>
             </div>
           </Modal>
@@ -106,10 +120,12 @@ const Allocation = props => {
             style={customStyles}
             contentLabel="Example Modal"
           >
-            <div className="form-container">
+            <div className="modal-container">
             <h2 className="form-name">Allocation</h2>
-            <label>Enter Allocation Spend Amount</label>
-            <input type="text" onChange={(e) => setAmountSpent(parseInt(e.target.value))} placeholder="Enter Allocation Spend Amount" value={String(amountSpen)}/>
+            <div>
+              <label className="modal-label">Enter Amount Spend</label>
+              <input className="form-input" type="text" onChange={changeAmountSpend} placeholder="Enter Allocation Spend Amount" value={String(amountSpen)}/>
+            </div>
             
             <button onClick={changeFund}>Done</button>
             </div>

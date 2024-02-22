@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { toastInfo, toastSuccess, toastError } from "../utils/toastWrapper";
-import { Toaster } from "react-hot-toast";
 import {Navigate} from 'react-router-dom'
 import logic from "../interface/logic";
-
+import './styles/createAllocation.css';
 
 const CreateAllocation = props => {
   const [allocationName, setFundName] = useState("");
-  const [amountAllocated, setAmountAllocated] = useState("");
+  const [amountAllocated, setAmountAllocated] = useState('');
   const [purpose, setPurpose] = useState("");
   const {wallet} = props
 
@@ -17,8 +16,15 @@ const CreateAllocation = props => {
   const changePurpose = (e) => setPurpose(e.target.value);
 
 
-  const changeAmountAllocated = (e) =>
-    setAmountAllocated(parseInt(e.target.value));
+  const changeAmountAllocated = (e) => {
+    if (Number.isNaN(parseInt(e.target.value))) {
+      setAmountAllocated("");
+    }
+    else {
+      setAmountAllocated(parseInt(e.target.value));
+    }
+  }
+    
 
 
     const addToList = async (e) => {
@@ -43,21 +49,24 @@ const CreateAllocation = props => {
       }
 
     return (
-        <form onSubmit={addToList}>
-          <h2 className="state">Fund Name</h2>
-          <input type="text" value={allocationName} onChange={changeFundName} />
-          <h2 className="">Amount Allocated</h2>
+        <form className="home-container" onSubmit={addToList}>
+          <h2 className="form-text">Fund Name</h2>
+          <input type="text"
+          className="form-input" value={allocationName} onChange={changeFundName} />
+          <h2 className="form-text">Amount Allocated</h2>
           <input
             type="text"
+            className="form-input"
             value={amountAllocated}
             onChange={changeAmountAllocated}
           />
-          <h2>purpose</h2>
-          <input type="text" value={purpose} onChange={changePurpose} />
+          <h2 className="form-text">purpose</h2>
+          <input type="text"
+          className="form-input" value={purpose} onChange={changePurpose} />
           
           <br />
           <br />
-          <button type="submit">Add to Allocated</button>
+          <button type="submit" >Add to Allocated</button>
         </form>
     )
 }

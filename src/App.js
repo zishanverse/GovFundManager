@@ -15,7 +15,6 @@ const App = () => {
   const wa = localStorage.getItem("wallet");
   const [wallet, setWallet] = useState(wa === null ? undefined : wa);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(wa);
   
   const updateWallet = (wallet) => {
     setWallet(wallet);

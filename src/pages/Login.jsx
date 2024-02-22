@@ -10,6 +10,7 @@ const Login = ({wallet }) => {
     return (
         <div className='login'>
             <img src="https://cdn-icons-png.freepik.com/512/154/154345.png" alt="wallet" className='login-img' />
+            <h1>Please Connect to wallet</h1>
         </div>
     )
 }

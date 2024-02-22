@@ -10,15 +10,8 @@ import Allocation from "./Allocation";
 
 
 const Home = ({ wallet }) => {
-  const [updateFund, setUpdateFund] = useState("");
   const [list, setList] = useState([]);
-  const [fundId, setFundId] = useState("");
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  
-
-  
 
   useEffect(() => {
     getData();
@@ -28,12 +21,10 @@ const Home = ({ wallet }) => {
     
       try {
         const {allocations} = await logic.GetAllocations();
-        console.log(allocations);
-        const update = []
+        const update = [];
         for (let each of allocations.entries()) {
           update.push({...each[1], key: each[0]});
         };
-        console.log(update);
         setList(update);
         
         setLoading(false);
@@ -42,12 +33,7 @@ const Home = ({ wallet }) => {
         setLoading(false);
         toastError(error.message);
       }
-    
   }
-
-  
-
-  
 
   
   if (wallet === undefined) {
@@ -60,13 +46,13 @@ const Home = ({ wallet }) => {
           {loading ? <Circles
   height="80"
   width="80"
-  color="#4fa94d"
+  color="#000"
   ariaLabel="circles-loading"
   wrapperStyle={{}}
   wrapperClass=""
   visible={true}
   /> : <><img src="https://www.icicidirect.com/images//Fund%20manager-202210281647246454795.png" alt="gov" className="gov-logo" />
-  <h1>Gov Fund Manager</h1>
+  <h1 className="heading">Gov Fund Manager</h1>
   <Link to="/create-allocation" ><button >Add Allocation</button></Link>
   <h1 className="head">List of Allocations</h1>
   <ul className="pre-allocations">

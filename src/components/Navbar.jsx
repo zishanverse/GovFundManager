@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { truncateStr } from "../utils/truncateStr";
 import { Link } from "react-router-dom";
-
+import '../pages/styles/login.css';
 const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
   const [toggleValue, setToggle] = useState(false);
-  console.log(wallet);
   const navRef = useRef(null);
 
   const handleToggle = () => {
@@ -25,7 +24,7 @@ const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
   }, [toggleValue]);
 
   return (
-    <nav className="navbar">
+    <nav className="navbar nav">
       <div className="nav__header">
         <div
           onClick={handleToggle}
