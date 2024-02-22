@@ -31,7 +31,7 @@ const Allocation = props => {
   const [comment, setComment] = useState("");
   const {item, wallet} = props
   const {amountAllocated, amountSpent, purpose, comments, key} = item
-  console.log(comments)
+
 
  
 
