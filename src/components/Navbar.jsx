@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import '../pages/styles/login.css';
- //import Cookies from 'js-cookie'
 const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
   const [toggleValue, setToggle] = useState(false);
   const navRef = useRef(null);
@@ -36,7 +35,7 @@ const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
           <div></div>
           <div></div>
         </div>
-        <div className="navbar__logo" href="/">
+        <div className="navbar__logo nav-text" href="/">
           Gov Fund Manager
         </div>
       </div>
@@ -46,17 +45,11 @@ const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
           (toggleValue && "nav__links nav__links--expanded") || "nav__links"
         }
       >
-        <Link to={"/home"}>Home</Link>
-        <Link to={"/faucet"}>Claim Faucet</Link>
-        <a
-          href={"https://moi.technology"}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Built on MOI
-        </a>
+        <Link to={"/home"}><p className="nav-text">Home</p></Link>
+        <Link to={"/create-allocation"}><p className="nav-text">Create Allocation</p></Link>
+        <Link to="/allocations" ><p className="nav-text">Allocations</p></Link>
         <button
-          className="connect-button"
+          className="connect-btn"
           onClick={wallet ? () => updateWallet() : () => {
             showConnectModal(true)
             //Cookies.remove("wallet")

@@ -1,8 +1,12 @@
 
 import logic from "../interface/logic";
 import { toastInfo, toastSuccess, toastError } from "../utils/toastWrapper";
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Modal from 'react-modal';
+import {Navigate} from 'react-router-dom';
+import {Circles} from 'react-loader-spinner';
+import AppContext from "../Context/context";
+import {useParams} from 'react-router-dom';
 import './styles/allocation.css';
 // This page opens to view individual allocation
 
@@ -23,46 +27,38 @@ const customStyles = {
   };
   
 
-const Allocation = props => {
+const Allocation = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
-  const [amountSpen, setAmountSpent] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [amountSpent, setAmountSpent] = useState("");
+  const [item, setItem] = useState("");
   const [comment, setComment] = useState("");
-  const {item, wallet} = props
-  const {amountAllocated, amountSpent, purpose, comments, key} = item
+  const {name} = useParams();
 
+  useEffect(() => {
+    getData();
+  }, []);
 
- 
-
-    const changeFund = async () => {
-        try {
-            toastInfo("Adding Spend Amount...");
-            await logic.UpdateAmountSpent(wallet, key , amountSpen);
-            toastSuccess("Successfully Added");
-            setIsOpen(false);
-            setAmountSpent(0);
-          }
-          catch (error) {
-            closeModal();
-            setAmountSpent(0);
-            toastError(error.message);
-          }
-      };
-
-      const AddComment = async () => {
-        try {
-            toastInfo("Adding Comment...");
-            await logic.AddComment(wallet, key , comment);
-            toastSuccess("Successfully Added");
-            setIsOpen2(false);
-            setComment("");
-          }
-          catch (error) {
-            setIsOpen2(false);
-            setComment("");
-            toastError(error.message);
-          }
+  const getData = async () => {
+      try {
+        const {allocations} = await logic.GetAllocations();
+        const update = [];
+        for (let each of allocations.entries()) {
+          update.push({...each[1], key: each[0]});
+        };
+        const found = update.find(each => each.key === name)
+        setItem(found);
+        console.log(found);
+        setLoading(false);
       }
+      catch (error) {
+        setLoading(false);
+        toastError(error.message);
+      }
+  }
+
+
     
   const changeAmountSpend = event => {
     if (Number.isNaN(parseInt(event.target.value))) {
@@ -88,15 +84,69 @@ const Allocation = props => {
     setIsOpen2(false);
   }
     return (
-        <li className="allocation-item">
-            <p className="allocation-text">Name: {key}</p>
-            <p>Amount Allocated: {amountAllocated}</p>
-            <p>Amount Spent: {amountSpent}</p>
-            <p>Purpose: {purpose}</p>
-            
+      <AppContext.Consumer>
+        {value => {
+          const {wallet} = value;
+          const changeFund = async () => {
+            try {
+                toastInfo("Adding Spend Amount...");
+                await logic.UpdateAmountSpent(wallet, name , amountSpent);
+                toastSuccess("Successfully Added");
+                setIsOpen(false);
+                setAmountSpent(0);
+              }
+              catch (error) {
+                closeModal();
+                setAmountSpent(0);
+                toastError(error.message);
+              }
+          };
+    
+          const AddComment = async () => {
+            try {
+                toastInfo("Adding Comment...");
+                await logic.AddComment(wallet, name , comment);
+                toastSuccess("Successfully Added");
+                setIsOpen2(false);
+                setComment("");
+              }
+              catch (error) {
+                setIsOpen2(false);
+                setComment("");
+                toastError(error.message);
+              }
+          }
+
+          if (wallet === undefined) {
+            return <Navigate replace to={"/connect"} />
+          }
+        
+
+          return (
+            <li className="home-container">
+          {loading ? <Circles
+                      height="80"
+                      width="80"
+                      color="#000"
+                      ariaLabel="circles-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                      visible={true}
+                  /> : 
+                  <div className="allocation-details-card">
+                  <h1 className="head">Allocation Details</h1>
+                  <p className="allocation-text">Name: {name}</p>
+            <p>Amount Allocated: {item.amountAllocated}</p>
+            <div className="flex">
+            <p>Amount Spent: {item.amountSpent}</p> <button onClick={openModal} className="btn update">Update</button>
+            </div>
+            <p>Purpose: {item.purpose}</p>
+            <h2 className="head">Previous Comments</h2>
+            <ol>
+                {item.comments.map(each => <li className="comment">{each.comment}</li>)}
+            </ol>
             <div className="btns">
-            <button onClick={openModal} className="form-btn">Update</button>
-            <button onClick={openModal2} className="form-btn">comments</button>
+            <button onClick={openModal2} className="connect-btn">Add Comments</button>
             </div>
             <Modal
             isOpen={modalIsOpen2}
@@ -105,13 +155,9 @@ const Allocation = props => {
             contentLabel="Example Modal"
           >
             <div className="modal-container">
-            <h2 className="form-name">previous Comments</h2>
-            <ol>
-                {comments.map(each => <li className="comment">{each.comment}</li>)}
-            </ol>
             <div>
               <label className="modal-label">Enter your comment</label>
-              <textarea  rows="15" cols="25" onChange={(e) => setComment(e.target.value)} placeholder="Enter your Comment  " value={comment}/>
+              <textarea  rows="25" cols="30" onChange={(e) => setComment(e.target.value)} placeholder="Enter your Comment  " value={comment}/>
             </div>
             <button onClick={AddComment}>Done</button>
             </div>
@@ -127,13 +173,21 @@ const Allocation = props => {
             <h2 className="form-name">Allocation</h2>
             <div>
               <label className="modal-label">Enter Amount Spend</label>
-              <input className="form-input" type="text" onChange={changeAmountSpend} placeholder="Enter Allocation Spend Amount" value={String(amountSpen)}/>
+              <input className="form-input" type="text" onChange={changeAmountSpend} placeholder="Enter Allocation Spend Amount" value={String(amountSpent)}/>
             </div>
             
             <button onClick={changeFund}>Done</button>
             </div>
           </Modal>
+          </div>
+                  }
+            
         </li>
+          )
+        }}
+
+      </AppContext.Consumer>
+        
     )
 }
 

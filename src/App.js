@@ -1,6 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import "./App.css";
-// import Cookies from 'js-cookie';
+import './pages/styles/home.css'
+import AppContext from "./Context/context";
 import ConnectModal from "./components/ConnectModal";
 import Navbar from "./components/Navbar";
 import { useState } from "react";
@@ -28,7 +29,7 @@ const App = () => {
   };
 
   return (
-    <div className="app">
+    <div className="main-container">
       <Navbar
         updateWallet={updateWallet}
         wallet={wallet}
@@ -40,15 +41,17 @@ const App = () => {
         showConnectModal={showConnectModal}
         updateWallet={updateWallet}
       />
+      <AppContext.Provider value={({wallet: wallet})}>
       <Routes>
-        <Route exact path="/connect" element={<Login wallet={wallet} />} />
-        <Route exact path="/" element={<Home wallet={wallet} />} />
-        <Route exact path="/create-allocation" element={<CreateAllocation wallet={wallet} />} />
+        <Route exact path="/connect" element={<Login />} />
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/create-allocation" element={<CreateAllocation />} />
         <Route exact path="/allocations" element={<Allocations />} />
         <Route exact path="/allocations/:name" element={<Allocation />} />
         <Route exact path="/bad-path" element={<NotFound />} />
-        <Route exact path="*" element={<Login wallet={wallet} />} />
+        <Route exact path="*" element={<Login />} />
       </Routes>
+    </AppContext.Provider>
     </div>
   );
 }
