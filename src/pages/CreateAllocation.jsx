@@ -45,7 +45,7 @@ const CreateAllocation = props => {
       };
 
       if (wallet === undefined) {
-        return <Navigate replace to={"/connect"} />
+        return <Navigate replace={true} to={"/connect"} />
       }
 
     return (

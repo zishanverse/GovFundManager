@@ -1,7 +1,6 @@
 
 import logic from "../interface/logic";
-import {toastError } from "../utils/toastWrapper";
-import { Toaster } from "react-hot-toast";
+import { toastInfo, toastSuccess, toastError } from "../utils/toastWrapper";
 import {useState} from 'react';
 import Modal from 'react-modal';
 import './styles/allocation.css';
@@ -37,7 +36,9 @@ const Allocation = props => {
 
     const changeFund = async () => {
         try {
-            const response = await logic.UpdateAmountSpent(wallet, key , amountSpen);
+            toastInfo("Adding Spend Amount...");
+            await logic.UpdateAmountSpent(wallet, key , amountSpen);
+            toastSuccess("Successfully Added");
             setIsOpen(false);
             setAmountSpent(0);
           }
@@ -50,7 +51,9 @@ const Allocation = props => {
 
       const AddComment = async () => {
         try {
-            const response = await logic.AddComment(wallet, key , comment);
+            toastInfo("Adding Comment...");
+            await logic.AddComment(wallet, key , comment);
+            toastSuccess("Successfully Added");
             setIsOpen2(false);
             setComment("");
           }

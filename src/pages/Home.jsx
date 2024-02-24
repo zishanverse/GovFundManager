@@ -43,22 +43,21 @@ const Home = ({ wallet }) => {
       <>
       <Toaster />
         <div className="home-container">
-          {loading ? <Circles
-  height="80"
-  width="80"
-  color="#000"
-  ariaLabel="circles-loading"
-  wrapperStyle={{}}
-  wrapperClass=""
-  visible={true}
-  /> : <><img src="https://www.icicidirect.com/images//Fund%20manager-202210281647246454795.png" alt="gov" className="gov-logo" />
-  <h1 className="heading">Gov Fund Manager</h1>
-  <Link to="/create-allocation" ><button >Add Allocation</button></Link>
-  <h1 className="head">List of Allocations</h1>
-  <ul className="pre-allocations">
-    {list.map(each => <Allocation key={each.key} wallet={wallet} item={each}/>)}
-  </ul>
-  </>}
+        <img src="https://www.icicidirect.com/images//Fund%20manager-202210281647246454795.png" alt="gov" className="gov-logo" />
+            <h1 className="heading">Gov Fund Manager</h1>
+            <Link to="/create-allocation" ><button >Add Allocation</button></Link>
+            <h1 className="head">List of Allocations</h1>
+            {loading ? <Circles
+                height="80"
+                width="80"
+                color="#000"
+                ariaLabel="circles-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+            /> : <ul className="pre-allocations">
+            {list.map(each => <Allocation key={each.key} wallet={wallet} item={each}/>)}
+          </ul>}
           
           </div>
       </>

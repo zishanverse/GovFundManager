@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { truncateStr } from "../utils/truncateStr";
 import { Link } from "react-router-dom";
 import '../pages/styles/login.css';
+ //import Cookies from 'js-cookie'
 const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
   const [toggleValue, setToggle] = useState(false);
   const navRef = useRef(null);
@@ -59,7 +59,8 @@ const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
           className="connect-button"
           onClick={wallet ? () => updateWallet() : () => {
             showConnectModal(true)
-            localStorage.removeItem("wallet")}}
+            //Cookies.remove("wallet")
+          }}
         >
           {wallet
             ? 'Disconnect'

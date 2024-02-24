@@ -1,5 +1,6 @@
 import { Toaster } from "react-hot-toast";
 import "./App.css";
+// import Cookies from 'js-cookie';
 import ConnectModal from "./components/ConnectModal";
 import Navbar from "./components/Navbar";
 import { useState } from "react";
@@ -12,13 +13,13 @@ import Allocation from './pages/Allocation';
 import NotFound from './pages/NotFound';
 
 const App = () => {
-  const wa = localStorage.getItem("wallet");
-  const [wallet, setWallet] = useState(wa === null ? undefined : wa);
+  // const wa = Cookies.get("wallet");
+  const [wallet, setWallet] = useState(); //wa
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const updateWallet = (wallet) => {
     setWallet(wallet);
-    localStorage.setItem("wallet", wallet)
+    // Cookies.set("wallet", wallet, {expires:30});
   };
   const showConnectModal = (value) => {
     setIsModalOpen(value);
