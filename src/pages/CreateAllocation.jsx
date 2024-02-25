@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { toastInfo, toastSuccess, toastError } from "../utils/toastWrapper";
-import {Navigate} from 'react-router-dom';
+import {Navigate, useNavigate} from 'react-router-dom';
 import AppContext from "../Context/context";
+import {ColorRing} from 'react-loader-spinner';
 import logic from "../interface/logic";
 import './styles/createAllocation.css';
 
@@ -9,7 +10,8 @@ const CreateAllocation = () => {
   const [allocationName, setFundName] = useState("");
   const [amountAllocated, setAmountAllocated] = useState('');
   const [purpose, setPurpose] = useState("");
-  
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const changeFundName = (e) => {
     setFundName(e.target.value);
@@ -38,20 +40,24 @@ const CreateAllocation = () => {
             const addToList = async (e) => {
               e.preventDefault();
               
-              try {   
+              try {
+                setLoading(true);   
                 toastInfo("Adding Todo ...");
                 await logic.CreateAllocations(wallet,allocationName, purpose, amountAllocated);
                 toastSuccess("Successfully Added");
-                setFundName("");
                 setPurpose("");
                 setAmountAllocated('');
+                setLoading(false);
+                navigate(`/allocations/${allocationName}`);
+                setFundName("");
               } catch (error) {
+                setLoading(false);
                 toastError(error.message);
               }
             };
 
             if (wallet === undefined) {
-              return <Navigate replace={true} to={"/connect"} />
+              return <Navigate replace to={"/connect"} />
             }
       
           return (
@@ -73,7 +79,15 @@ const CreateAllocation = () => {
                 
                 <br />
                 <br />
-                <button type="submit" className="connect-btn">Add to Allocated</button>
+                <button type="submit" className="connect-btn">{loading ? <ColorRing
+  visible={true}
+  height="20"
+  width="20"
+  ariaLabel="color-ring-loading"
+  wrapperStyle={{}}
+  wrapperClass="color-ring-wrapper"
+  colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+  /> : 'Add to Allocated'}</button>
                 </div>
               </form>
           )

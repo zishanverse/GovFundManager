@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { truncateStr } from "../utils/truncateStr";
 import '../pages/styles/login.css';
 const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
   const [toggleValue, setToggle] = useState(false);
@@ -49,14 +50,14 @@ const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
         <Link to={"/create-allocation"}><p className="nav-text">Create Allocation</p></Link>
         <Link to="/allocations" ><p className="nav-text">Allocations</p></Link>
         <button
-          className="connect-btn"
+          className="connect-btn wallet-btn"
           onClick={wallet ? () => updateWallet() : () => {
             showConnectModal(true)
             //Cookies.remove("wallet")
           }}
         >
           {wallet
-            ? 'Disconnect'
+            ? `Disconnect: ${wallet && truncateStr(wallet.getAddress(), 11)}`
             : "Connect"}
         </button>
       </ul>

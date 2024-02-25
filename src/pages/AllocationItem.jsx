@@ -27,8 +27,8 @@ const AllocationItem = props => {
         <Link to={`/allocations/${key}`}>     
             <li className="allocation-item">
                 <p className="allocation-text">Name: {key}</p>
-                <p>Amount Allocated: {amountAllocated}</p>
-                <p>Amount Spent: {amountSpent}</p>
+                <p>Amount Allocated: {amountAllocated} Rupees</p>
+                <p>Amount Spent: {amountSpent} Rupees</p>
                 <p>Purpose: {purpose}</p>
                 <button className='btn'>More Details</button>
             </li>

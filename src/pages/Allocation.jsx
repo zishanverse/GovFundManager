@@ -4,7 +4,9 @@ import { toastInfo, toastSuccess, toastError } from "../utils/toastWrapper";
 import {useState, useEffect} from 'react';
 import Modal from 'react-modal';
 import {Navigate} from 'react-router-dom';
-import {Circles} from 'react-loader-spinner';
+import { truncateStr } from "../utils/truncateStr";
+import { bytesToHex } from "js-moi-sdk";
+import {Circles, ColorRing} from 'react-loader-spinner';
 import AppContext from "../Context/context";
 import {useParams} from 'react-router-dom';
 import './styles/allocation.css';
@@ -34,7 +36,9 @@ const Allocation = () => {
   const [amountSpent, setAmountSpent] = useState("");
   const [item, setItem] = useState("");
   const [comment, setComment] = useState("");
+  const [loadingBtn, setLoadingBtn] = useState(false);
   const {name} = useParams();
+  console.log(item);
 
   useEffect(() => {
     getData();
@@ -42,6 +46,7 @@ const Allocation = () => {
 
   const getData = async () => {
       try {
+        setLoading(true);
         const {allocations} = await logic.GetAllocations();
         const update = [];
         for (let each of allocations.entries()) {
@@ -89,30 +94,37 @@ const Allocation = () => {
           const {wallet} = value;
           const changeFund = async () => {
             try {
+              setLoadingBtn(true);
                 toastInfo("Adding Spend Amount...");
                 await logic.UpdateAmountSpent(wallet, name , amountSpent);
                 toastSuccess("Successfully Added");
                 setIsOpen(false);
                 setAmountSpent(0);
+                setLoadingBtn(false);
               }
               catch (error) {
                 closeModal();
                 setAmountSpent(0);
+                setLoadingBtn(false);
                 toastError(error.message);
               }
           };
     
           const AddComment = async () => {
             try {
+                setLoadingBtn(true);
                 toastInfo("Adding Comment...");
                 await logic.AddComment(wallet, name , comment);
                 toastSuccess("Successfully Added");
                 setIsOpen2(false);
                 setComment("");
+                setLoadingBtn(false);
+                getData();
               }
               catch (error) {
                 setIsOpen2(false);
                 setComment("");
+                setLoadingBtn(false);
                 toastError(error.message);
               }
           }
@@ -136,15 +148,14 @@ const Allocation = () => {
                   <div className="allocation-details-card">
                   <h1 className="head">Allocation Details</h1>
                   <p className="allocation-text">Name: {name}</p>
-            <p>Amount Allocated: {item.amountAllocated}</p>
+            <p>Amount Allocated: {item.amountAllocated} Rupees</p>
             <div className="flex">
-            <p>Amount Spent: {item.amountSpent}</p> <button onClick={openModal} className="btn update">Update</button>
+            <p>Add to amount spent: {item.amountSpent} Rupees</p> <button onClick={openModal} className="btn update">Update</button>
             </div>
             <p>Purpose: {item.purpose}</p>
             <h2 className="head">Previous Comments</h2>
             <ol>
-                {item.comments.map(each => <li className="comment">{each.comment}</li>)}
-            </ol>
+                {item && item.comments.map(each => <li className="comment-card"><p className="comment">comment: {each.comment}</p><p className="comment">commentator: {truncateStr(bytesToHex(each.commentator), 11)}</p></li>)}</ol>
             <div className="btns">
             <button onClick={openModal2} className="connect-btn">Add Comments</button>
             </div>
@@ -159,7 +170,15 @@ const Allocation = () => {
               <label className="modal-label">Enter your comment</label>
               <textarea  rows="25" cols="30" onChange={(e) => setComment(e.target.value)} placeholder="Enter your Comment  " value={comment}/>
             </div>
-            <button onClick={AddComment}>Done</button>
+            <button onClick={AddComment} className="btn">{loadingBtn ? <ColorRing
+  visible={true}
+  height="20"
+  width="20"
+  ariaLabel="color-ring-loading"
+  wrapperStyle={{}}
+  wrapperClass="color-ring-wrapper"
+  colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+  /> : 'Done'}</button>
             </div>
           </Modal>
 
@@ -176,7 +195,15 @@ const Allocation = () => {
               <input className="form-input" type="text" onChange={changeAmountSpend} placeholder="Enter Allocation Spend Amount" value={String(amountSpent)}/>
             </div>
             
-            <button onClick={changeFund}>Done</button>
+            <button onClick={changeFund} className="btn">{loadingBtn ? <ColorRing
+  visible={true}
+  height="20"
+  width="20"
+  ariaLabel="color-ring-loading"
+  wrapperStyle={{}}
+  wrapperClass="color-ring-wrapper"
+  colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+  /> : 'Add Spend'}</button>
             </div>
           </Modal>
           </div>
