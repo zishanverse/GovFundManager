@@ -4,7 +4,6 @@ import logic from "../interface/logic";
 import AppContext from "../Context/context";
 import {toastError } from "../utils/toastWrapper";
 import {Circles} from 'react-loader-spinner';
-import {Navigate} from 'react-router-dom';
 import "./styles/allocation.css";
 import AllocationItem from "./AllocationItem";
 
@@ -40,10 +39,8 @@ const Allocations = ({ wallet }) => {
     <AppContext.Consumer>
       {value => {
         const {wallet} = value;
-
-        if (wallet === undefined) {
-          return <Navigate replace to={"/connect"} />
-        }
+        
+        
           return (
             
               <div className="home-container">

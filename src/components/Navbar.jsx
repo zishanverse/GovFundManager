@@ -46,8 +46,8 @@ const Navbar = ({ updateWallet, showConnectModal, wallet }) => {
           (toggleValue && "nav__links nav__links--expanded") || "nav__links"
         }
       >
-        <Link to={"/home"}><p className="nav-text">Home</p></Link>
-        <Link to={"/create-allocation"}><p className="nav-text">Create Allocation</p></Link>
+        <Link to="/"><p className="nav-text">Home</p></Link>
+        <Link to="/add-allocation"><p className="nav-text">Add Allocation</p></Link>
         <Link to="/allocations" ><p className="nav-text">Allocations</p></Link>
         <button
           className="connect-btn wallet-btn"

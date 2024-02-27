@@ -3,7 +3,6 @@ import logic from "../interface/logic";
 import { toastInfo, toastSuccess, toastError } from "../utils/toastWrapper";
 import {useState, useEffect} from 'react';
 import Modal from 'react-modal';
-import {Navigate} from 'react-router-dom';
 import { truncateStr } from "../utils/truncateStr";
 import { bytesToHex } from "js-moi-sdk";
 import {Circles, ColorRing} from 'react-loader-spinner';
@@ -91,27 +90,38 @@ const Allocation = () => {
     return (
       <AppContext.Consumer>
         {value => {
-          const {wallet} = value;
+          const {wallet, setIsModalOpen} = value;
           const changeFund = async () => {
-            try {
-              setLoadingBtn(true);
-                toastInfo("Adding Spend Amount...");
-                await logic.UpdateAmountSpent(wallet, name , amountSpent);
-                toastSuccess("Successfully Added");
-                setIsOpen(false);
-                setAmountSpent(0);
-                setLoadingBtn(false);
-              }
-              catch (error) {
-                closeModal();
-                setAmountSpent(0);
-                setLoadingBtn(false);
-                toastError(error.message);
-              }
+            if (wallet === undefined) {
+              setIsModalOpen(true);
+            }
+            else {
+              try {
+                setLoadingBtn(true);
+                  toastInfo("Adding Spend Amount...");
+                  await logic.UpdateAmountSpent(wallet, name , amountSpent);
+                  toastSuccess("Successfully Added");
+                  setIsOpen(false);
+                  setAmountSpent(0);
+                  setLoadingBtn(false);
+                  getData();
+                }
+                catch (error) {
+                  closeModal();
+                  setAmountSpent(0);
+                  setLoadingBtn(false);
+                  toastError(error.message);
+                }
+            }
+            
           };
     
           const AddComment = async () => {
-            try {
+            if (wallet === undefined) {
+              setIsModalOpen(true);
+            }
+            else {
+              try {
                 setLoadingBtn(true);
                 toastInfo("Adding Comment...");
                 await logic.AddComment(wallet, name , comment);
@@ -127,11 +137,10 @@ const Allocation = () => {
                 setLoadingBtn(false);
                 toastError(error.message);
               }
+            }
           }
 
-          if (wallet === undefined) {
-            return <Navigate replace to={"/connect"} />
-          }
+          
         
 
           return (

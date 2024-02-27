@@ -35,30 +35,33 @@ const CreateAllocation = () => {
       return (
         <AppContext.Consumer>
           {value => {
-            const {wallet} = value;
+            const {wallet, setIsModalOpen} = value;
 
             const addToList = async (e) => {
               e.preventDefault();
-              
-              try {
-                setLoading(true);   
-                toastInfo("Adding Todo ...");
-                await logic.CreateAllocations(wallet,allocationName, purpose, amountAllocated);
-                toastSuccess("Successfully Added");
-                setPurpose("");
-                setAmountAllocated('');
-                setLoading(false);
-                navigate(`/allocations/${allocationName}`);
-                setFundName("");
-              } catch (error) {
-                setLoading(false);
-                toastError(error.message);
+              if (wallet === undefined) {
+                setIsModalOpen(true);
               }
+              else {
+                try {
+                  setLoading(true);   
+                  toastInfo("Adding Todo ...");
+                  await logic.CreateAllocations(wallet,allocationName, purpose, amountAllocated);
+                  toastSuccess("Successfully Added");
+                  setPurpose("");
+                  setAmountAllocated('');
+                  setLoading(false);
+                  navigate(`/allocations/${allocationName}`);
+                  setFundName("");
+                } catch (error) {
+                  setLoading(false);
+                  toastError(error.message);
+                }
+              }
+              
             };
 
-            if (wallet === undefined) {
-              return <Navigate replace to={"/connect"} />
-            }
+            
       
           return (
               <form className="home-container" onSubmit={addToList}>
