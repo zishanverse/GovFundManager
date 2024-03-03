@@ -1,12 +1,10 @@
 
 import { useState, useEffect } from "react";
 import logic from "../interface/logic";
-import AppContext from "../Context/context";
 import {toastError } from "../utils/toastWrapper";
 import {Circles} from 'react-loader-spinner';
 import "./styles/allocation.css";
 import AllocationItem from "./AllocationItem";
-
 
 
 const Allocations = ({ wallet }) => {
@@ -36,14 +34,8 @@ const Allocations = ({ wallet }) => {
   }
 
   return (
-    <AppContext.Consumer>
-      {value => {
-        const {wallet} = value;
-        
-        
-          return (
             
-              <div className="home-container">
+              <div className="allocations-container">
                   {loading ? <Circles
                       height="80"
                       width="80"
@@ -59,9 +51,7 @@ const Allocations = ({ wallet }) => {
                 </ul>
                   </> }
                 </div>
-            )
-      }}
-    </AppContext.Consumer>
+            
   )
 };
 

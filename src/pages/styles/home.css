@@ -1,7 +1,6 @@
 .home-container {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     min-height: 80vh;
 }
@@ -16,8 +15,40 @@
   .gov-logo {
     border-radius: 10px;
     margin: 20px;
-    width: 40%;
+    width: 30%;
+    box-shadow: 0px 0px 10px 1px #3f3f3f;
+    transition: 0.5s;
+  }
+
+  .gov-logo:hover {
+    width: 32%;
+    box-shadow: 0px 0px 20px 2px #3f3f3f;
+    
+  } 
+  .content {
+    font-size: 17px;
+  }
   
+  .home-content {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    width: 55vw;
+  }
+  .heading {
+    font-size: 35px;
+    width: 100%;
+    transition: 0.5s;
+  }
+
+  .heading:hover {
+    -webkit-text-stroke: 1px #ADD8E6;
+    color: transparent;
+    margin-bottom: 10px;
+  }
+
+  .moi-text {
+    color: rgba(75, 23, 229, 0.99);
   }
   
   .form-container {
@@ -38,6 +69,7 @@
     h1 {
       color: #ADD8E6;
     }
+
   
   p {
     color: #ADD8E6;
@@ -133,15 +165,10 @@
       padding: 0px;
       background-color: transparent;
       margin-top: 25px;
-      color: #ADD8E6;
       font-weight: bold;
   }
     
-    .heading {
-      font-size: 35px;
-      text-align: center;
-      width: 100%;
-    }
+    
   
   @media (max-width:575px) {
     .heading {

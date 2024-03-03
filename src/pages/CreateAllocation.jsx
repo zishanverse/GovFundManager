@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toastInfo, toastSuccess, toastError } from "../utils/toastWrapper";
-import {Navigate, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import AppContext from "../Context/context";
 import {ColorRing} from 'react-loader-spinner';
 import logic from "../interface/logic";
