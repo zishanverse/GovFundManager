@@ -45,7 +45,7 @@ const CreateAllocation = () => {
               else {
                 try {
                   setLoading(true);   
-                  toastInfo("Adding Todo ...");
+                  toastInfo("Adding Allocation...");
                   await logic.CreateAllocations(wallet,allocationName, purpose, amountAllocated);
                   toastSuccess("Successfully Added");
                   setPurpose("");

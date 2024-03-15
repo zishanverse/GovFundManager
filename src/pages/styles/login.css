@@ -38,6 +38,7 @@
         width: 80vw;
     }
     .closeAndMenu {
+        display:inline;
         color: #fff;
         font-size: 20px;
     }

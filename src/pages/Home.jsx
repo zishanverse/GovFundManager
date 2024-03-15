@@ -7,10 +7,11 @@ import "./styles/home.css";
 const Home = () => (
               <div className="home-container">
                 <div className='home-content'>
-                  <h1>
+                  <h1 className='home-head'>
                       <span className="heading">G</span>
                       <span className="heading">o</span>
                       <span className="heading">v </span>
+                      <span className="heading">Integrated </span>
                       <span className="heading">F</span>
                       <span className="heading">u</span>
                       <span className="heading">n</span>

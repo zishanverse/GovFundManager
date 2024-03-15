@@ -38,6 +38,10 @@
   .content {
     font-size: 17px;
   }
+
+  .home-head {
+    width: 100vh;
+  }
   
   .home-content {
     display: flex;
